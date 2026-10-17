@@ -28,9 +28,11 @@ policy.
 | --- | --- |
 | no servers of ours, no analytics, ads or tracking | no such dependency in `app/package.json`; no `fetch`, `XMLHttpRequest` or socket call in `app/src`; no `NSUserTrackingUsageDescription` in `Info.plist` |
 | nothing sent to us | every `http(s)` host in the release JS bundle and native binaries was listed. All are documentation links inside error messages, or Apple and this page. One is a client for a purchase-verification service (`kit.openiap.dev`) that ships inside the purchases library and runs only when `verifyPurchaseWithProvider` is called; the app imports no `verify*` function |
-| what is stored on the device | the app writes two files only: `progress/<picture>.json` (ids of coloured regions) and `store/entitlement.json` (a yes/no and a timestamp) |
+| what is stored on the device | the app writes three kinds of file, all in its own documents folder: `progress/<picture>.json` (ids of coloured regions), `store/entitlement.json` (a yes/no and a timestamp) and `store/engagement.json` (which pictures were finished, whether the welcome offer was shown, when the rating request was last made) |
 | no permissions requested | the built `Info.plist` has no `*UsageDescription` key |
-| purchases happen between the person and Apple | the only store calls are `initConnection`, `fetchProducts`, `requestPurchase`, `restorePurchases`, `hasActiveSubscriptions` and `finishTransaction` through StoreKit; no `appAccountToken` or other identifier is passed |
+| purchases happen between the person and Apple | the only store calls are `initConnection`, `fetchProducts`, `requestPurchase`, `restorePurchases`, `hasActiveSubscriptions`, `isEligibleForIntroOfferIOS` and `finishTransaction` through StoreKit; no `appAccountToken` or other identifier is passed |
+| feedback goes nowhere unless the person sends it | "Send feedback" is `Linking.openURL('mailto:...')`: it opens the mail app with an address and subject, nothing more |
+| the rating request is Apple's | `expo-store-review` calls the system prompt; the app is not told the answer. It is requested for everyone alike, never only after a "do you like it?" question |
 | the language setting is read on the device | `expo-localization` is used for that and nothing else |
 
 ## Keep it in step with the app
