@@ -56,31 +56,43 @@ def e(s):
     return html.escape(s, quote=False)
 
 
-def build():
+def build_page(kind):
     nav = "".join(f'<a href="#{c}" data-l="{c}">{NAMES[c]}</a>' for c in LANGS)
     sections = []
     for c in LANGS:
         t = TEXTS[c]
-        body = [f"<p><em>{e(t['updated'])}: {UPDATED}</em></p>"]
-        for key in SECTIONS:
-            body.append(f"<h2>{e(t[key + '_h'])}</h2><p>{e(t[key])}</p>")
-        body.append(
-            f"<h2>{e(t['contact_h'])}</h2>"
-            f"<p>{e(t['contact'])} <a href=\"mailto:{EMAIL}\">{EMAIL}</a></p>"
-            f"<p>{e(DEV)}</p>"
-        )
+        if kind == "privacy":
+            body = [f"<p><em>{e(t['updated'])}: {UPDATED}</em></p>"]
+            for key in SECTIONS:
+                body.append(f"<h2>{e(t[key + '_h'])}</h2><p>{e(t[key])}</p>")
+            title = t["title"]
+        else:
+            body = [f"<p>{e(t['s_intro'])}</p>"]
+            body.append(f"<h2>{e(t['contact_h'])}</h2><p>{e(t['contact'])} <a href=\"mailto:{EMAIL}\">{EMAIL}</a></p>")
+            for key in ("s1", "s2", "s3"):
+                body.append(f"<h2>{e(t[key + '_h'])}</h2><p>{e(t[key])}</p>")
+            title = t["support_title"]
+        if kind == "privacy":
+            body.append(f"<h2>{e(t['contact_h'])}</h2><p>{e(t['contact'])} <a href=\"mailto:{EMAIL}\">{EMAIL}</a></p>")
+        body.append(f"<p>{e(DEV)}</p>")
         sections.append(
-            f'<section class="l" id="l-{c}" lang="{c}"><h1>{e(t["title"])}</h1>{"".join(body)}</section>'
+            f'<section class="l" id="l-{c}" lang="{c}"><h1>{e(title)}</h1>{"".join(body)}</section>'
         )
 
     page = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{e(APP)}: {e(TEXTS['en']['title'])}</title><meta name="robots" content="index,follow"><style>{CSS}</style></head><body>
+<title>{e(APP)}: {e(TEXTS['en']['title' if kind == 'privacy' else 'support_title'])}</title><meta name="robots" content="index,follow"><style>{CSS}</style></head><body>
 <header><div class="in"><h1>{e(APP)}</h1><p>{e(DEV)}</p></div></header>
 <main><nav class="lang">{nav}</nav>{''.join(sections)}</main>
-<footer>© 2026 {e(DEV)}</footer><script>{JS}</script></body></html>"""
-    with open(os.path.join(os.path.dirname(__file__) or ".", "privacy.html"), "w", encoding="utf-8") as f:
+<footer><a href="privacy.html">Privacy</a> · <a href="support.html">Support</a><br>© 2026 {e(DEV)}</footer><script>{JS}</script></body></html>"""
+    name = "privacy.html" if kind == "privacy" else "support.html"
+    with open(os.path.join(os.path.dirname(__file__) or ".", name), "w", encoding="utf-8") as f:
         f.write(page)
-    print("built privacy.html:", len(LANGS), "languages,", len(SECTIONS), "sections each")
+    print("built", name, ":", len(LANGS), "languages")
+
+
+def build():
+    build_page("privacy")
+    build_page("support")
 
 
 if __name__ == "__main__":

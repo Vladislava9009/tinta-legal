@@ -7,7 +7,9 @@ Privacy Policy for the iOS app **Tinta: Color by Number**
 other two legal repositories: <https://vladislava9009.github.io/tinta-legal/privacy.html>.
 The app's paywall opens that address.
 
-Source: `texts.py` (the words) -> `build.py` generates `privacy.html`.
+Source: `texts.py` (the words) -> `build.py` generates `privacy.html` and `support.html`.
+The support page is the Support URL the store listing needs: how to restore a
+purchase, how to cancel, where progress is kept, and the contact address.
 
 ```bash
 python3 build.py
@@ -54,8 +56,7 @@ Things that would change the policy, and that are easy to add without noticing:
 - **App Privacy:** *Data Not Collected*. The app collects nothing and uses no
   third-party SDK that does.
 - **Privacy Policy URL:** the published address of `privacy.html`.
-- **Support URL:** still needed for submission and not built here; it is the
-  same generator with a different page (see `~/Developer/wow-fasting-legal`).
+- **Support URL:** <https://vladislava9009.github.io/tinta-legal/support.html>.
 
 ## Details to confirm
 
