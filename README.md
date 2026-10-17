@@ -3,10 +3,9 @@
 Privacy Policy for the iOS app **Tinta: Color by Number**
 (`com.tinta.app`), in English, Russian and Ukrainian.
 
-**Status: draft, not published.** The app's paywall already links to
-`https://vladislava9009.github.io/tinta-legal/privacy.html`, which will 404
-until this is published with GitHub Pages. Apple rejects a subscription screen
-whose links do not open, so this has to be live before the app is submitted.
+**Status: published** (2026-10-17) with GitHub Pages from `main`, the same way as the
+other two legal repositories: <https://vladislava9009.github.io/tinta-legal/privacy.html>.
+The app's paywall opens that address.
 
 Source: `texts.py` (the words) -> `build.py` generates `privacy.html`.
 
